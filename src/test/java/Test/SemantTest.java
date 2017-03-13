@@ -89,4 +89,10 @@ public class SemantTest {
            "error.CompilerError: 1/33-1/34 undefined variable 'x'");
    }
 
+   @Test
+   public void testAssign() throws Exception {
+      trun("let var x: int = 8",
+              INT.T);
+   }
+
 }

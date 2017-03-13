@@ -48,6 +48,8 @@ terminal        LPAREN, RPAREN;
 terminal        COMMA, SEMICOLON;
 terminal        VAR, EQ, COLON;
 terminal        LET, IN;
+terminal        ATT;
+terimanl        IF,THEN,ELSE;
 
 non terminal Exp       program;
 non terminal Exp       exp;
@@ -56,6 +58,7 @@ non terminal List<Exp> expseq, expseqRest;
 non terminal Dec       dec;
 non terminal List<Dec> decs;
 non terminal Var       var;
+
 
 precedence left OR;
 precedence left AND;
@@ -84,6 +87,10 @@ exp ::=
 | var:v                        {: RESULT = new ExpVar(loc(vxleft,vxright), v); :}
 | LET:l decs:ds IN exp:b       {: RESULT = new ExpLet(loc(lxleft,bxright), ds, b); :}
 | LPAREN:l expseq:es RPAREN:r  {: RESULT = new ExpSeq(loc(lxleft,rxright), es); :}
+| var:v ATT exp:e              {: RESULT = new ExpAssign(loc(lxleft,rxright),v,e); :}
+| IF exp:a THEN exp:b ELSE exp:c  {: RESULT = new ExpIf(loc(lxleft,rxright),a,b,c); :}
+| IF exp:a THEN exp:b              {: RESULT = new ExpIf(loc(lxleft,rxright),a,b); :}
+
 ;
 
 exps ::=
@@ -119,3 +126,5 @@ decs ::=
 var ::=
   ID:v                         {: RESULT = new VarSimple(loc(vxleft,vxright), v); :}
 ;
+
+
